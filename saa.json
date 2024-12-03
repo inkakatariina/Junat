@@ -1,0 +1,22 @@
+{
+    "name": "Helsinki",
+    "main": {
+        "temp": 5
+    },
+    "weather": [
+        {
+            "description": "pilvinen",
+            "icon": "04d"
+        }
+    ],
+    "presets": [
+        {
+            "time": "12:00",
+            "icon": "04d"
+        },
+        {
+            "time": "15:00",
+            "icon": "02d"
+        }
+    ]
+}

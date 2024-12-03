@@ -1,0 +1,144 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+    body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.topnav {
+  overflow: hidden;
+  background-color: #e3b366;
+}
+
+.topnav a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.topnav a.active {
+  background-color: #505352;
+  color: white;
+}
+
+.topnav .icon {
+  display: none;
+}
+
+@media screen and (max-width: 600px) {
+  .topnav a:not(:first-child) {display: none;}
+  .topnav a.icon {
+    float: right;
+    display: block;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .topnav.responsive {position: relative;}
+  .topnav.responsive .icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .topnav.responsive a {
+    float: none;
+    display: block;
+    text-align: left;
+  }
+}
+</style>
+
+</head>
+<body>
+    <div class="topnav" id="myTopnav">
+        <a href="tapahtumat.html" class="active">Tapahtumat</a>
+        <a href="saa.html" >Sää</a>
+        <a href="liikennekamera.html">Liikennekamera</a>
+        <a href="junat.html">Junat</a>
+        <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+            <i class="fa fa-bars"></i>
+        </a>
+    </div>
+
+<!--sivun sisällön tulostuspaikka-->
+<div id="vastaus"></div>
+<!-- Liitetään JavaScript-tiedosto -->
+<script src="tapahtumat.js"></script>
+
+<script>
+    function myFunction() {
+        var x = document.getElementById("myTopnav");
+        if (x.className === "topnav") {
+            x.className += " responsive";
+        } else {
+            x.className = "topnav";
+        }
+    }
+</script>
+
+
+<script>
+    // Navigointivalikon toiminto
+    function myFunction() {
+        var x = document.getElementById("myTopnav");
+        if (x.className === "topnav") {
+            x.className += " responsive";
+        } else {
+            x.className = "topnav";
+        }
+    }
+
+    // JSON-haun ja tapahtumat-funktion määrittely
+    async function haeTapahtumat() {
+        try {
+            // Hae JSON-data ulkoisesta lähteestä
+            const vastaus = await fetch('tapahtumat.json'); // Vaihda URL oikeaan JSON-tiedoston sijaintiin
+            const data = await vastaus.json();
+
+            // Kutsu tapahtumat-funktiota saadulla datalla
+            tapahtumat(data);
+        } catch (error) {
+            console.error("Tapahtumien hakemisessa tapahtui virhe:", error);
+            document.getElementById("vastaus").innerHTML = "<p>Virhe tapahtumien hakemisessa.</p>";
+        }
+    }
+
+    // Tapahtumat-funktio
+    function tapahtumat(data) {
+        var teksti = "<h2>Tapahtumat:</h2>";
+        for (var i = 0; i < data.length; i++) {
+            // Hae tapahtuman nimi, kuvaus ja URL
+            var nimi = data[i].nimi;
+            var kuvaus = data[i].kuvaus;
+            var url = data[i].url;
+
+            // Lisää tiedot tekstimuuttujaan
+            teksti += "<div>";
+            teksti += "<h3>" + nimi + "</h3>";
+            teksti += "<p>" + kuvaus + "</p>";
+            teksti += "<a href='" + url + "' target='_blank'>Lisätiedot</a>";
+            teksti += "</div><hr>";
+        }
+        // Tulosta teksti-muuttujan sisältö web-sivulle
+        document.getElementById("vastaus").innerHTML = teksti;
+    }
+
+    // Kutsu haeTapahtumat-funktiota sivun latautuessa
+    haeTapahtumat();
+</script>
+
+</body>
+
+</html>
